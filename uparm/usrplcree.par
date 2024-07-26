@@ -1,0 +1,9 @@
+region,s,a,"ds9.reg",,,"region descriptor"
+image,s,a,"NGC7606rmosaic.fits",,,"reference image file or 2 dims for mask"
+mask,s,a,"NGC7606rmosaic",,,"output mask data file (root.pl)"
+display,i,h,2,0,2,"display level: >0 => header, >1 => mask"
+disp_mode,s,h,"zoom",,,"display: zoom, full, x1 x2 y1 y2"
+ncols,i,h,80,,,"number of columns in display"
+nrows,i,h,30,,,"number of rows in display"
+clobber,b,h,no,,,"delete old copy of output mask file"
+mode,s,h,"ql",,,
