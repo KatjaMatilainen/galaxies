@@ -1,0 +1,92 @@
+NOTES FOR THE Galaxies assignment; how to use IRAF
+
+Load packages while in ecl, and from that location open the wanted task: 
+>for ex. "stsdas>image>tv>display"
+
+;---------------------------------------------------------------------------;
+imexam > use key "a" when cursor is approx. at galaxy center
+> the coordinates listed are the position of the peak value
+> here it is x=1196.90,  y=1196.08
+
+#   COL    LINE     COORDINATES
+#     R    MAG    FLUX     SKY    PEAK    E   PA BETA ENCLOSED   MOFFAT DIRECT
+1196.90 1196.08 1196.90 1196.08
+  20.76  10.39 700613.    270.   4885. 0.32   55 1.80    10.65     7.41   6.93
+
+imexam > "m" gives statistics on 5*5 pixels area
+> use it to record "stddev" values of the background
+> use this information exactly where..?
+
+#            SECTION     NPIX     MEAN   MEDIAN   STDDEV      MIN      MAX
+[1056:1060,1372:1376]       25  -0.4583    0.389    4.099   -6.772    5.675
+ [995:999,1366:1370]       25 -0.02595  -0.3987    4.032    -6.36    9.121
+ [980:984,1248:1252]       25    1.231    1.525    3.916   -7.354    7.219
+ [956:960,1304:1308]       25    1.553   0.7317    3.791   -4.154    11.84
+ [953:957,1403:1407]       25  0.06147  -0.9267    4.487   -6.351    9.382
+[1423:1427,997:1001]       25  -0.4379  -0.8028    3.949   -6.917    8.579
+[1404:1408,1036:1040]       25   0.7707   0.6531    3.835   -8.135    7.443
+[1363:1367,1019:1023]       25    1.038    1.637    4.301   -9.808     9.08
+[1313:1317,1003:1007]       25    1.528    1.988    3.268   -6.902    6.764
+ [1358:1362,978:982]       25    1.581    2.661    4.042   -5.475    7.455
+ [961:965,1297:1301]       25  -0.4021 -0.09792    3.752   -6.765    7.047
+
+;---------------------------------------------------------------------------;
+General linux tip: record activity in terminal with 
+> "(something) > (filename)" command
+> for example "ls > file" saves the list of objects in the current directory
+> to a text file named "file"
+> you can view the contents with command "more (filename)"
+> or add more text with "(command) >> (filename)"
+> for example "ls >> file"
+
+Use this to record stddev values in a file. "imexam > (filename)"
+;---------------------------------------------------------------------------;
+stsdas > analysis > isophote
+
+
+doellipse NGC7606mosaic.fits ell xc yc sma0 pa0 ee0 maxsma delta=delta
+fix cen+
+
+(xc,yc)=center of the galaxy (imexam->a)
+sma0=initial radius in pixels (radius where the fit is started, so a lower limit
+on what the radius is? Just check this approximately by looking?)
+pa0=initial guess on position angle. Set this to 0?
+ee0=initial guess on the ellipticity. Set this to circle aka 0?
+maxsma= maximum radius to which we do the fit. Check this by looking too?
+delta= something between 0.1 and 0.01
+
+;----------------------------------------------------------------------------;
+;Plot ellipticity and position angle in IDL
+;----------------------------------------------------------------------------;
+As a function of what? Radius?
+The profiles should be flat in the outskirts, so find out the values they approach.
+
+;----------------------------------------------------------------------------;
+Use the outskirt ell0 and pa0 in "fixellipse NGC7606mosaic.fits ell fix xc yc 
+sma0 pa0 ee0 maxsma delta=delta”
+and create a file "ell_fix.txt"
+;----------------------------------------------------------------------------;
+
+
+;Ellipticity = 0.5599
+;Position angle = -39.29
+
+
+NEW:
+0.4955     0.000  -37.87
+
+
+
+
+IDL COMMENTS
+;Just testing if a single table works
+;data=fltarr(9,624)
+;for n=1,9 do begin
+;varname='data'+strtrim(n,1)
+;(scope_varfetch(varname,level=-1,/enter))=data[n-1,*]
+;    status=execute('data'+strtrim(n,2)=data[n,*])
+;print,strtrim('data'+string(n))
+;banana=strcompress('data'+string(n),/remove_all)
+;endfor
+;print, data2
+
